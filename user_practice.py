@@ -1,28 +1,55 @@
+class BankAccount:
+    # don't forget to add some default values for these parameters!
+    accounts = []
+    def __init__(self, int_rate, balance = 0): 
+        self.int_rate = int_rate
+        self.balance = balance
+        BankAccount.accounts.append(self)
+    def deposit(self, amount):
+        self.balance += amount
+        return self
+    def withdraw(self, amount):
+        if (self.balance > amount):
+            self.balance -= amount
+        else:
+            self.balance -= 5
+            print("Insufficient funds: Carging a $5 fee")
+        return self
+    def display_account_info(self):
+        print(f"Balance: {self.balance}")
+    def yield_interest(self):
+        if (self.balance > 0):
+            self.balance *= (self.int_rate + 1)
+        return self
+    @classmethod
+    def get_all_info(cls):
+        for account in cls.accounts:
+            print(f"Your interest rate is: {account.int_rate} Your balance is: {account.balance}")
+
+
 class User:
-    # declaring a class atrribute
-    bank_name = "First National Dojo"
-    # Initialize with two parameters
     def __init__(self, name, email_address):
         self.name = name
         self.email = email_address
-        self.account_balance = 0
+        self.account = BankAccount(int_rate = 0.02, balance = 0)
 
         # adding the deposit method
     def make_deposit(self, amount):	# takes an argument that is the amount of the deposit
-        self.account_balance += amount	# the specific user's account increases by the amount of the value received
+        self.account.deposit(amount)	# the specific user's account increases by the amount of the value received
         return self
 
     def make_withdrawal(self, amount):
-        self.account_balance -= amount
+        self.account.withdraw(amount)
         return self
 
     def display_user_balance(self):
-        print(f"User: {self.name}, Balance: {self.account_balance}")
+        # print(f"User: {self.name}, Balance: {self.account_balance}")
+        self.account.display_account_info()
         return self
 
     def transfer_money(self, other_user, amount):
-        self.account_balance -= amount
-        other_user.account_balance += amount
+        self.account.withdraw(amount)
+        other_user.account.deposit(amount)
         return self
 
 

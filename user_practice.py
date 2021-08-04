@@ -26,6 +26,19 @@ class BankAccount:
         for account in cls.accounts:
             print(f"Your interest rate is: {account.int_rate} Your balance is: {account.balance}")
 
+class CheckingAccount(BankAccount):
+    def __init__(self, int_rate, is_roth, balance = 0):
+        super().__init__(int_rate, balance)
+        self.is_roth = is_roth
+
+class RetirementAccount(BankAccount):
+    def __init__(self, int_rate, balance=0):
+        super().__init__(int_rate, balance)
+    def withdraw(self, amount, is_early):
+        if is_early:
+            amount = amount * 1.1
+        super().withdraw(amount)
+        return self
 
 class User:
     def __init__(self, name, email_address):
